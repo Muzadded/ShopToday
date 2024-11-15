@@ -85,7 +85,7 @@
                             <td>{{$data->category_name}}</td>
 
                             <td>{{$data->updated_at}}</td>
-                            <td><a class="btn btn-info" onclick="confirmation(event)" href="{{url('edit_category',$data->id)}}">Edit</a>
+                            <td><a class="btn btn-info"  href="{{url('edit_category',$data->id)}}">Edit</a>
                                 <a class="btn btn-danger" onclick="confirmation(event)" href="{{url('delete_category',$data->id)}}">Delete</a></td>
                         </tr>
 
