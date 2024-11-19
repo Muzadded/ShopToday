@@ -30,6 +30,10 @@
             color: white;
             padding: 13px;
         }
+        .search_bar{
+            padding: 7.2px;
+            margin-top: 25px;
+        }
     </style>
 </head>
 
@@ -43,6 +47,12 @@
             <div class="page-header">
                 <div class="container-fluid">
                     <h1>View Products</h1>
+                    <form action="{{url('product_search')}}" method="get">
+                        @csrf
+
+                        <input type="search" name="search" class="search_bar">
+                        <input type="submit" class="btn btn-secondary" value="Search">
+                    </form>
 
                     <div class="div_des">
                         <table class="tab_des">
