@@ -12,7 +12,7 @@
                 <div class="box">
                     <a href="">
                         <div class="img-box">
-                            <img src="products/{{$products->image}}" alt="">
+                            <img style="width: 400;" src="products/{{$products->image}}" alt="">
                         </div>
                         <div class="detail-box">
                             <h6>
@@ -24,6 +24,10 @@
                                 {{$products->price}}
                                 </span>
                             </h6>
+                        </div>
+                        <div style="padding: 10px;">
+                            <a class="btn btn-info" href="{{url('product_details',$products->id)}}">Details</a>
+                            <a class="btn btn-primary" href="{{url('add_cart',$products->id)}}">Add to Cart</a>
                         </div>
                     </a>
                 </div>
