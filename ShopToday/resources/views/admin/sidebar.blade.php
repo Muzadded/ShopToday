@@ -17,5 +17,10 @@
                 <li><a href="{{url('view_product')}}">View Product</a></li>
             </ul>
         </li>
+        <li><a href="{{url('view_orders')}}">Orders</a></li>
+
+
+
+
 
 </nav>
