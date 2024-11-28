@@ -22,6 +22,8 @@ require __DIR__.'/auth.php';
 route::get('admin/dashboard' ,[HomeController::class, 'index'])->middleware(['auth','admin']);
 route::get('product_details/{id}',[HomeController::class,'product_details']);
 route::get('add_cart/{id}',[HomeController::class,'add_cart'])->middleware(['auth', 'verified']);
+route::get('my_cart',[HomeController::class,'my_cart'])->middleware(['auth', 'verified']);
+route::post('confirm_order',[HomeController::class,'confirm_order'])->middleware(['auth', 'verified']);
 
 route::get('view_category',[AdminController::class, 'view_category'])->middleware(['auth','admin']);
 route::post('add_cat',[AdminController::class, 'add_cat'])->middleware(['auth','admin']);
@@ -35,4 +37,5 @@ route::get('delete_prod/{id}',[AdminController::class,'delete_prod'])->middlewar
 route::get('update_prod/{id}',[AdminController::class,'update_prod'])->middleware(['auth','admin']);
 route::post('edit_product/{id}',[AdminController::class,'edit_product'])->middleware(['auth','admin']);
 route::get('product_search',[AdminController::class,'product_search'])->middleware(['auth','admin']);
+route::get('view_orders',[AdminController::class,'view_orders'])->middleware(['auth','admin']);
 
