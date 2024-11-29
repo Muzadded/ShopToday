@@ -38,6 +38,10 @@
 
                 @auth
 
+                <a href="{{url('my_orders')}}">
+                    My Orders
+                </a>
+
                 <a href="{{url('my_cart')}}">
                     <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                     {{$count}}

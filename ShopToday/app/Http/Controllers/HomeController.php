@@ -17,7 +17,7 @@ class HomeController extends Controller
         $product_count = Product::all()->count();
         $order_count = Order::all()->count();
         $delivered_count = Order::where('status','Delivered')->get()->count();
-        
+
         return view('admin.index',compact('user_count','product_count','order_count','delivered_count'));
     }
 
@@ -137,5 +137,22 @@ class HomeController extends Controller
             $data->delete();
         }
         return redirect()->back();
+    }
+
+    public function my_orders(){
+
+        if (Auth::id()) {
+            $user = Auth::user();
+
+            $userid = $user->id;
+
+            $count = Cart::where('user_id', $userid)->count();
+
+            $order = Order::where('user_id', $userid)->get();
+        } else {
+            $count = '';
+        }
+
+        return view('home.my_orders',compact('count','order'));
     }
 }
