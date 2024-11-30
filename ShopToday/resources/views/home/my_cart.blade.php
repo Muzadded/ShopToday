@@ -33,6 +33,9 @@
         .order_des{
             padding-right: 150px;
             margin-top: -100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .div_gap{
@@ -59,27 +62,7 @@
 
     <div class="div_des">
 
-    <div class="order_des">
-        <form action="{{url('confirm_order')}}" method="Post">
-            @csrf
-
-            <div class="div_gap">
-                <label for="">Receiver Name</label>
-                <input type="text" name="name" value="{{Auth::user()->name}}">
-            </div>
-            <div class="div_gap">
-                <label for="">Receiver Address</label>
-                <textarea name="address" id="" >{{Auth::user()->address}}</textarea>
-            </div>
-            <div class="div_gap">
-                <label for="">Receiver Phone</label>
-                <input type="text" name="phone" value="{{Auth::user()->phone}}">
-            </div>
-            <div class="div_gap">
-                <input class="btn btn-primary" type="submit" value="Place order">
-            </div>
-        </form>
-    </div>
+    
         <table class="cart_table">
             <tr>
                 <th>Product Title</th>
@@ -113,6 +96,29 @@
 
     <div style="text-align: center; margin-bottom:70px;">
         <h3>Total Value of Cart is: ${{$value}}</h3>
+    </div>
+<br><br><br>
+    <div class="order_des">
+        <form action="{{url('confirm_order')}}" method="Post">
+            @csrf
+
+            <div class="div_gap">
+                <label for="">Receiver Name</label>
+                <input type="text" name="name" value="{{Auth::user()->name}}">
+            </div>
+            <div class="div_gap">
+                <label for="">Receiver Address</label>
+                <textarea name="address" id="" >{{Auth::user()->address}}</textarea>
+            </div>
+            <div class="div_gap">
+                <label for="">Receiver Phone</label>
+                <input type="text" name="phone" value="{{Auth::user()->phone}}">
+            </div>
+            <div class="div_gap">
+                <input class="btn btn-primary" type="submit" value="Cash on Delivery">
+                <a class="btn btn-success" href="{{url('stripe',$value)}}">Pay With Card</a>
+            </div>
+        </form>
     </div>
     <!-- info section -->
     @include('home.footer');

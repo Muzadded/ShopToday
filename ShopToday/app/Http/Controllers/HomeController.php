@@ -8,17 +8,20 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\Cart;
 use App\Models\Order;
+use Stripe;
+use Illuminate\Support\Facades\Session;
+
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $user_count = User::where('usertype','user')->get()->count();
+        $user_count = User::where('usertype', 'user')->get()->count();
         $product_count = Product::all()->count();
         $order_count = Order::all()->count();
-        $delivered_count = Order::where('status','Delivered')->get()->count();
+        $delivered_count = Order::where('status', 'Delivered')->get()->count();
 
-        return view('admin.index',compact('user_count','product_count','order_count','delivered_count'));
+        return view('admin.index', compact('user_count', 'product_count', 'order_count', 'delivered_count'));
     }
 
     public function home()
@@ -130,16 +133,17 @@ class HomeController extends Controller
             $order->save();
         }
 
-        $cart_remove = Cart::where('user_id',$userid)->get();
+        $cart_remove = Cart::where('user_id', $userid)->get();
 
-        foreach($cart_remove as $remove){
+        foreach ($cart_remove as $remove) {
             $data = Cart::find($remove->id);
             $data->delete();
         }
         return redirect()->back();
     }
 
-    public function my_orders(){
+    public function my_orders()
+    {
 
         if (Auth::id()) {
             $user = Auth::user();
@@ -153,6 +157,54 @@ class HomeController extends Controller
             $count = '';
         }
 
-        return view('home.my_orders',compact('count','order'));
+        return view('home.my_orders', compact('count', 'order'));
     }
+
+    public function stripe($value)
+    {
+
+        return view('home.stripe',compact('value'));
+    }
+
+    public function stripePost(Request $request, $value)
+    {
+        Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe\Charge::create([
+
+            "amount" => $value * 100,
+            "currency" => "usd",
+            "source" => $request->stripeToken,
+            "description" => "Test payment from Complete"
+
+        ]);
+       
+        $name = Auth::user()->name;
+        $phone = Auth::user()->phone;
+        $address = Auth::user()->address;
+        $userid = Auth::user()->id;
+
+        $cart = Cart::where('user_id', $userid)->get();
+
+        foreach ($cart as $carts) {
+            $order = new Order;
+            $order->name = $name;
+            $order->rec_address = $address;
+            $order->phone = $phone;
+            $order->user_id = $userid;
+            $order->product_id = $carts->product_id;
+
+            $order->payment_status = "Paid with Card";
+
+            $order->save();
+        }
+
+        $cart_remove = Cart::where('user_id', $userid)->get();
+
+        foreach ($cart_remove as $remove) {
+            $data = Cart::find($remove->id);
+            $data->delete();
+        }
+        return redirect('my_cart');
+    }
+
 }
